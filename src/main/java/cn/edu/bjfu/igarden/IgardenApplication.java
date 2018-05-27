@@ -1,6 +1,5 @@
 package cn.edu.bjfu.igarden;
 
-import javafx.application.Application;
 import org.springframework.boot.ExitCodeGenerator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -19,7 +19,7 @@ public class SignController {
     private static final String KEY = "KWS2YS3wM494bArnT34U5Mx7EHGSDYRK";
     private static final String ClIENT = "LinD0102";
     private static final String GET_FLOWER_LIST_URL = "https://api.aiplants.cn/b64s/recognize";
-    private static String sFlowerUrl = "https://api.aiplants.cn/plants/%1$s/info";
+//    private static String sFlowerUrl = "https://api.aiplants.cn/plants/%1$s/info";
     private static final String FOR_SIGN = "9T6FQ3GR9BU$4T5N";
 
     @PostMapping(value = "/sign")
@@ -33,8 +33,6 @@ public class SignController {
     }
 
     public PlantList getFlowerList(String data) {
-        String image = data;
-        String client = ClIENT;
         String position = "test";
         String sign = sign(data);
         SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
@@ -44,9 +42,9 @@ public class SignController {
         //  请勿轻易改变此提交方式，大部分的情况下，提交方式都是表单提交
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         //  封装参数，千万不要替换为Map与HashMap，否则参数无法传递
-        MultiValueMap<String, String> params= new LinkedMultiValueMap<String, String>();
-        params.add("image", image);
-        params.add("client", client);
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("image", data);
+        params.add("client", ClIENT);
         params.add("position", position);
         params.add("sign", sign);
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(params, headers);
@@ -66,7 +64,7 @@ public class SignController {
         //  请勿轻易改变此提交方式，大部分的情况下，提交方式都是表单提交
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         //  封装参数，千万不要替换为Map与HashMap，否则参数无法传递
-        MultiValueMap<String, String> params= new LinkedMultiValueMap<String, String>();
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("client", ClIENT);
         params.add("time", time);
         params.add("random", random);

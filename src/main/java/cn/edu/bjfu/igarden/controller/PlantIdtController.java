@@ -29,11 +29,8 @@ public class PlantIdtController {
     public PlantList uploadImg(@RequestParam("file") MultipartFile file,
                                HttpServletRequest request) {
         logger.debug("test: 调用成功！！！");
-        String contentType = file.getContentType();
         String fileName = file.getOriginalFilename();
         logger.debug("test: " + fileName);
-        /*System.out.println("fileName-->" + fileName);
-        System.out.println("getContentType-->" + contentType);*/
         String filePath = request.getSession().getServletContext().getRealPath("imgupload/");
         try {
             FileUtil.uploadFile(file.getBytes(), filePath, fileName);
@@ -57,14 +54,9 @@ public class PlantIdtController {
     public BaseEntity<List<PlantList.ResultBean>> uploadImgBase64(@RequestParam("img") String img) {
         PlantList plant = signController.getFlowerList(img);
         BaseEntity<List<PlantList.ResultBean>> entity = new BaseEntity<>();
-        if (plant.getStatus() == 0) {
-            entity.setCode(200);
-            entity.setMessage("success");
-            entity.setData(plant.getResult());
-        } else {
-            entity.setCode(500);
-            entity.setMessage(plant.getMessage());
-        }
+        entity.setCode(plant.getStatus() == 0 ? 200 : 500);
+        entity.setMessage(plant.getStatus() == 0 ? "success" : plant.getMessage());
+        entity.setData(plant.getStatus() == 0 ? plant.getResult() : null);
         logger.debug("test:" + img);
         logger.debug("test:" + plant.getResult().get(0).getInfoUrl());
         return entity;
@@ -74,14 +66,9 @@ public class PlantIdtController {
     public BaseEntity<Plant.ResultBean> getPlant(@RequestParam("code") String infoUrl) {
         Plant plant = signController.getFlower(infoUrl);
         BaseEntity<Plant.ResultBean> entity = new BaseEntity<>();
-        if (plant.getStatus() == 0) {
-            entity.setCode(200);
-            entity.setMessage("success");
-            entity.setData(plant.getResult());
-        } else {
-            entity.setCode(500);
-            entity.setMessage(plant.getMessage());
-        }
+        entity.setCode(plant.getStatus() == 0 ? 200 : 500);
+        entity.setMessage(plant.getStatus() == 0 ? "success" : plant.getMessage());
+        entity.setData(plant.getStatus() == 0 ? plant.getResult() : null);
 
         // 保存植物信息
         PlantTable plantTable = new PlantTable();
