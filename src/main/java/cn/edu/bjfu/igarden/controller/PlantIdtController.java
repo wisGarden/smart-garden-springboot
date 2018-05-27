@@ -6,8 +6,7 @@ import cn.edu.bjfu.igarden.entity.Plant;
 import cn.edu.bjfu.igarden.entity.PlantList;
 import cn.edu.bjfu.igarden.entity.PlantTable;
 import cn.edu.bjfu.igarden.util.FileUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import cn.edu.bjfu.igarden.util.LogUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,15 +21,12 @@ public class PlantIdtController {
     private SignController signController;
     @Autowired
     private PlantRepository plantRepository;
-    private static Logger logger = LoggerFactory.getLogger(PlantIdtController.class);
 
     // Duplicate 处理文件上传
     @RequestMapping(value = "/testuploadimg", method = RequestMethod.POST)
     public PlantList uploadImg(@RequestParam("file") MultipartFile file,
                                HttpServletRequest request) {
-        logger.debug("test: 调用成功！！！");
         String fileName = file.getOriginalFilename();
-        logger.debug("test: " + fileName);
         String filePath = request.getSession().getServletContext().getRealPath("imgupload/");
         try {
             FileUtil.uploadFile(file.getBytes(), filePath, fileName);
@@ -57,8 +53,8 @@ public class PlantIdtController {
         entity.setCode(plant.getStatus() == 0 ? 200 : 500);
         entity.setMessage(plant.getStatus() == 0 ? "success" : plant.getMessage());
         entity.setData(plant.getStatus() == 0 ? plant.getResult() : null);
-        logger.debug("test:" + img);
-        logger.debug("test:" + plant.getResult().get(0).getInfoUrl());
+        LogUtil.d("test:" + img);
+        LogUtil.d("test:" + plant.getResult().get(0).getInfoUrl());
         return entity;
     }
 
@@ -100,17 +96,15 @@ public class PlantIdtController {
         plantTable.setUpdateTime(System.currentTimeMillis() / 1000);
         savePlant(plantTable);
 
-        logger.debug("test:" + plant.getStatus());
-        logger.debug("test:" + plant.getResult().getDescription());
+        LogUtil.d("test:" + plant.getStatus());
+        LogUtil.d("test:" + plant.getResult().getDescription());
         return entity;
     }
 
     // Duplicate
     @PostMapping(value = "/postImg")
     public String postImg(@RequestParam("file") MultipartFile file) {
-        String fileName = file.getOriginalFilename();
-        logger.debug("test: " + fileName);
-        return fileName;
+        return file.getOriginalFilename();
     }
 
     // Duplicate

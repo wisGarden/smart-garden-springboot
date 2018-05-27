@@ -12,7 +12,7 @@ public class PlantTable {
     @Id
     @NotNull
     @GeneratedValue
-    public int id;
+    private int id;
     private String plantName;
     private String plantAlias;
     private String plantLatinName;
@@ -28,6 +28,7 @@ public class PlantTable {
     private String plantHksj;
     private long createTime;
     private long updateTime;
+    private long deleteTime;
 
     public int getId() {
         return id;
@@ -155,5 +156,13 @@ public class PlantTable {
 
     public void setUpdateTime(long updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public long getDeleteTime() {
+        return deleteTime;
+    }
+
+    public void setDeleteTime(long deleteTime) {
+        this.deleteTime = deleteTime;
     }
 }
