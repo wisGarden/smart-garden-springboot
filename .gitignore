@@ -23,6 +23,7 @@ log/
 *.rar
 .idea/
 .mvn/
+*.iml
 
 # macOS
 .DS_Store
