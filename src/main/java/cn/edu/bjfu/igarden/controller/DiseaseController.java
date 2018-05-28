@@ -18,14 +18,30 @@ public class DiseaseController {
     /**
      * 病害查询，支持多参数，以空格隔开
      * @param name 输入参数
+     * @param page 页数，从1开始
      * @return 病害列表
      */
     @GetMapping(value = "/getDiseaseList")
-    public BaseEntity getDisease(@RequestParam("name") String name) {
+    public BaseEntity getDisease(@RequestParam("name") String name, int page) {
         BaseEntity<List> baseEntity = new BaseEntity<>();
         baseEntity.setCode(200);
         baseEntity.setMessage("success");
-        baseEntity.setData(diseaseImpl.getDisease(name));
+        baseEntity.setData(diseaseImpl.getDisease(0, name, page));
+        return baseEntity;
+    }
+
+    /**
+     * 虫害查询，支持多参数，以空格隔开
+     * @param name 输入参数
+     * @param page 页数，从1开始
+     * @return 虫害列表
+     */
+    @GetMapping(value = "/getInsectList")
+    public BaseEntity getInsect(@RequestParam("name") String name, int page) {
+        BaseEntity<List> baseEntity = new BaseEntity<>();
+        baseEntity.setCode(200);
+        baseEntity.setMessage("success");
+        baseEntity.setData(diseaseImpl.getDisease(1, name, page));
         return baseEntity;
     }
 }

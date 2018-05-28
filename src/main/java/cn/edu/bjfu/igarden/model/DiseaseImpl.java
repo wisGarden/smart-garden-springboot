@@ -13,6 +13,7 @@ import java.util.List;
 
 @Component
 public class DiseaseImpl {
+    private static final int ITEM_NUM = 5;
     @Autowired
     DiseaseRepository diseaseRepository;
     @Autowired
@@ -20,7 +21,7 @@ public class DiseaseImpl {
     @Autowired
     EntityManager entityManager;
 
-    public List getDisease(String name) {
+    public List getDisease(int type, String name, int page) {
         // 多参数where子句组装
         String[] names = name.trim().split(" ");
         String baseWhere = "d.disease_name like '%%%s%%'";
@@ -35,8 +36,9 @@ public class DiseaseImpl {
         }
 
         String baseQuery = "select d.id, d.disease_name name, d.disease_description description, p.plant_name plantName, d.disease_image imageUrl " +
-                "from disease d inner join plant p on d.plant_id = p.id where d.delete_time = 0 and p.delete_time = 0 and d.disease_type = 0 and %s";
-        String mQuery = String.format(baseQuery, whereBuilder.toString());
+                "from disease d inner join plant p on d.plant_id = p.id where d.delete_time = 0 and p.delete_time = 0 and " +
+                "(select (@rowNum\\:=@rowNum+1) from (Select (@rowNum \\:=0) ) b) > (%1$d * %2$d) and d.disease_type = %3$d and %4$s order by d.id asc limit %2$d";
+        String mQuery = String.format(baseQuery, page - 1, ITEM_NUM, type, whereBuilder.toString());
 
         // 自定义query，提高查询效率
         Query query = entityManager.createNativeQuery(mQuery);
