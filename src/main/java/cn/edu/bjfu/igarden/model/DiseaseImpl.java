@@ -2,6 +2,7 @@ package cn.edu.bjfu.igarden.model;
 
 import cn.edu.bjfu.igarden.dao.DiseaseRepository;
 import cn.edu.bjfu.igarden.dao.PlantRepository;
+import cn.edu.bjfu.igarden.entity.DiseaseTable;
 import org.hibernate.SQLQuery;
 import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class DiseaseImpl {
     @Autowired
     EntityManager entityManager;
 
-    public List getDisease(int type, String name, int page) {
+    public List getDiseaseList(int type, String name, int page) {
         // 多参数where子句组装
         String[] names = name.trim().split(" ");
         String baseWhere = "d.disease_name like '%%%s%%'";
@@ -46,5 +47,9 @@ public class DiseaseImpl {
         query.unwrap(SQLQuery.class).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
 
         return query.getResultList();
+    }
+
+    public DiseaseTable getDisease(int id) {
+        return diseaseRepository.findByIdAndDeleteTime(id, 0);
     }
 }

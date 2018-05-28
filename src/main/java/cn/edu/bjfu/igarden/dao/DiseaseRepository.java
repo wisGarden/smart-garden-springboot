@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface DiseaseRepository extends JpaRepository<DiseaseTable, Integer> {
 
-    DiseaseTable findById(int id);
+    DiseaseTable findByIdAndDeleteTime(int id, long deleteTime);
 }
