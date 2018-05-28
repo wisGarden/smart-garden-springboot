@@ -1,5 +1,6 @@
 package cn.edu.bjfu.igarden.controller;
 
+import cn.edu.bjfu.igarden.entity.BaseEntity;
 import cn.edu.bjfu.igarden.model.DiseaseImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +21,11 @@ public class DiseaseController {
      * @return 病害列表
      */
     @GetMapping(value = "/getDiseaseList")
-    public List getDisease(@RequestParam("name")String name) {
-        return diseaseImpl.getDisease(name);
+    public BaseEntity getDisease(@RequestParam("name") String name) {
+        BaseEntity<List> baseEntity = new BaseEntity<>();
+        baseEntity.setCode(200);
+        baseEntity.setMessage("success");
+        baseEntity.setData(diseaseImpl.getDisease(name));
+        return baseEntity;
     }
 }
