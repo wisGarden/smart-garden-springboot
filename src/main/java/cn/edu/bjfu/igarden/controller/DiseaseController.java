@@ -83,7 +83,11 @@ public class DiseaseController {
     }
 
     @GetMapping(value = "/findAll")
-    public Page<DiseaseTable> findAll(@RequestParam("page") int page) {
-        return diseaseImpl.findAll(page);
+    public BaseEntity<Page<DiseaseTable>> findAll(@RequestParam("page") int page) {
+        BaseEntity<Page<DiseaseTable>> baseEntity = new BaseEntity<>();
+        baseEntity.setCode(200);
+        baseEntity.setMessage("success");
+        baseEntity.setData(diseaseImpl.findAll(page));
+        return baseEntity;
     }
 }
