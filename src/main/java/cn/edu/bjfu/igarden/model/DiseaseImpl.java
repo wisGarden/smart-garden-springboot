@@ -58,6 +58,12 @@ public class DiseaseImpl {
         return query.getResultList();
     }
 
+    /**
+     * 根据查询次数、更新时间排序，分页获取病虫害列表数据
+     *
+     * @param page 页数
+     * @return 返回分页列表数据
+     */
     public Page<DiseaseTable> findAll(int page) {
         List<Sort.Order> list = new ArrayList<>();
         list.add(new Sort.Order(Sort.Direction.DESC, "hits"));
