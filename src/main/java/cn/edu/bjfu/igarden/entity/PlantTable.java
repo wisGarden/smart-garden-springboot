@@ -26,6 +26,7 @@ public class PlantTable {
     private String plantYhjs;
     private String plantBxtz;
     private String plantHksj;
+    private int hits;
     private long createTime;
     private long updateTime;
     private long deleteTime;
@@ -140,6 +141,18 @@ public class PlantTable {
 
     public void setPlantHksj(String plantHksj) {
         this.plantHksj = plantHksj;
+    }
+
+    public int getHits() {
+        return hits;
+    }
+
+    public void setHits(int hits) {
+        this.hits = hits;
+    }
+
+    public void hitsPlus() {
+        this.hits++;
     }
 
     public long getCreateTime() {

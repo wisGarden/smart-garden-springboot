@@ -26,6 +26,7 @@ public class DiseaseTable {
     private String diseaseLaw;
     private String diseasePrevention;
     private String diseaseImage;
+    private int hits;
     private long createTime;
     private long updateTime;
     private long deleteTime;
@@ -140,6 +141,18 @@ public class DiseaseTable {
 
     public void setDiseaseImage(String diseaseImage) {
         this.diseaseImage = diseaseImage;
+    }
+
+    public int getHits() {
+        return hits;
+    }
+
+    public void setHits(int hits) {
+        this.hits = hits;
+    }
+
+    public void hitsPlus() {
+        this.hits++;
     }
 
     public long getCreateTime() {

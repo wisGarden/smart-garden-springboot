@@ -6,21 +6,30 @@ import cn.edu.bjfu.igarden.entity.DiseaseTable;
 import org.hibernate.SQLQuery;
 import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class DiseaseImpl {
-    private static final int ITEM_NUM = 5;
+    private static final int ITEM_NUM = 10;
     @Autowired
     DiseaseRepository diseaseRepository;
     @Autowired
     PlantRepository plantRepository;
     @Autowired
     EntityManager entityManager;
+
+    public DiseaseTable getDisease(int id) {
+        return diseaseRepository.findByIdAndDeleteTime(id, 0);
+    }
 
     public List getDiseaseList(int type, String name, int page) {
         // 多参数where子句组装
@@ -49,7 +58,15 @@ public class DiseaseImpl {
         return query.getResultList();
     }
 
-    public DiseaseTable getDisease(int id) {
-        return diseaseRepository.findByIdAndDeleteTime(id, 0);
+    public Page<DiseaseTable> findAll(int page) {
+        List<Sort.Order> list = new ArrayList<>();
+        list.add(new Sort.Order(Sort.Direction.DESC, "hits"));
+        list.add(new Sort.Order(Sort.Direction.DESC, "updateTime"));
+        Pageable pageable = new PageRequest(page - 1, ITEM_NUM, new Sort(list));
+        return diseaseRepository.findByDeleteTime(0, pageable);
+    }
+
+    public void save(DiseaseTable diseaseTable) {
+        diseaseRepository.save(diseaseTable);
     }
 }
