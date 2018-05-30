@@ -19,6 +19,7 @@ import java.util.List;
 
 @Component
 public class DiseaseImpl {
+    private static final int SHORT_ITEM_NUM = 5;
     private static final int ITEM_NUM = 10;
     @Autowired
     DiseaseRepository diseaseRepository;
@@ -32,6 +33,9 @@ public class DiseaseImpl {
     }
 
     public List getDiseaseList(int type, String name, int page) {
+        if (name.contains("'")) {
+            name = name.replaceAll("'", "");
+        }
         // 多参数where子句组装
         String[] names = name.trim().split(" ");
         String baseWhere = "d.disease_name like '%%%s%%'";
@@ -61,18 +65,48 @@ public class DiseaseImpl {
     /**
      * 根据查询次数、更新时间排序，分页获取病虫害列表数据
      *
+     * @param type 0->病害 1->虫害
      * @param page 页数
      * @return 返回分页列表数据
      */
-    public Page<DiseaseTable> findAll(int page) {
+    public Page<DiseaseTable> findAll(int type, int page) {
         List<Sort.Order> list = new ArrayList<>();
         list.add(new Sort.Order(Sort.Direction.DESC, "hits"));
         list.add(new Sort.Order(Sort.Direction.DESC, "updateTime"));
         Pageable pageable = new PageRequest(page - 1, ITEM_NUM, new Sort(list));
-        return diseaseRepository.findByDeleteTime(0, pageable);
+        return diseaseRepository.findByDeleteTimeAndDiseaseType(type, 0, pageable);
     }
 
     public void save(DiseaseTable diseaseTable) {
         diseaseRepository.save(diseaseTable);
+    }
+
+    public List getPlantList(String name, int page) {
+        if (name.contains("'")) {
+            name = name.replaceAll("'", "");
+        }
+        // 多参数where子句组装
+        String[] names = name.trim().split(" ");
+        String baseWhere = "p.plant_name like '%%%s%%'";
+        String and = " and ";
+        StringBuilder whereBuilder = new StringBuilder();
+        for (int i = 0; i < names.length; i++) {
+            if (i == names.length - 1) {
+                whereBuilder.append(String.format(baseWhere, names[i]));
+            } else {
+                whereBuilder.append(String.format(baseWhere, names[i])).append(and);
+            }
+        }
+
+        String baseQuery = "select p.id, p.plant_name name, p.plant_description description, p.plant_family family, p.plant_genus genus, p.plant_image imageUrl " +
+                "from plant p where p.delete_time = 0 and %3$s order by p.update_time desc limit %1$d, %2$d";
+        String mQuery = String.format(baseQuery, (page - 1) * SHORT_ITEM_NUM, SHORT_ITEM_NUM, whereBuilder.toString());
+
+        // 自定义query，提高查询效率
+        Query query = entityManager.createNativeQuery(mQuery);
+        // 转换查询方式，返回key-value形式
+        query.unwrap(SQLQuery.class).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+
+        return query.getResultList();
     }
 }

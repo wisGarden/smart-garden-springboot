@@ -4,6 +4,7 @@ import cn.edu.bjfu.igarden.entity.BaseEntity;
 import cn.edu.bjfu.igarden.entity.DiseaseTable;
 import cn.edu.bjfu.igarden.model.DiseaseImpl;
 import cn.edu.bjfu.igarden.model.SearchImpl;
+import cn.edu.bjfu.igarden.util.LogUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +30,7 @@ public class DiseaseController {
      */
     @GetMapping(value = "/getDiseaseList")
     public BaseEntity getDiseaseList(@RequestParam("name") String name, @RequestParam("page") int page) {
+        LogUtil.d("name: " + name + " page: " + page);
         BaseEntity<List> baseEntity = new BaseEntity<>();
         baseEntity.setCode(200);
         baseEntity.setMessage("success");
@@ -66,6 +68,12 @@ public class DiseaseController {
         return baseEntity;
     }
 
+    /**
+     * 获取病虫害详情
+     *
+     * @param id 病虫害id
+     * @return 返回病虫害详情
+     */
     @GetMapping(value = "/getDisease")
     public BaseEntity<DiseaseTable> getDisease(@RequestParam("id") int id) {
         BaseEntity<DiseaseTable> baseEntity = new BaseEntity<>();
@@ -82,12 +90,56 @@ public class DiseaseController {
         return baseEntity;
     }
 
-    @GetMapping(value = "/findAll")
-    public BaseEntity<Page<DiseaseTable>> findAll(@RequestParam("page") int page) {
+    /**
+     * 根据查询次数、更新时间排序，分页获取病害列表数据
+     *
+     * @param page 页数
+     * @return 返回分页列表数据
+     */
+    @GetMapping(value = "/findAllDiseases")
+    public BaseEntity<Page<DiseaseTable>> findAllDiseases(@RequestParam("page") int page) {
         BaseEntity<Page<DiseaseTable>> baseEntity = new BaseEntity<>();
         baseEntity.setCode(200);
         baseEntity.setMessage("success");
-        baseEntity.setData(diseaseImpl.findAll(page));
+        baseEntity.setData(diseaseImpl.findAll(0, page));
+        return baseEntity;
+    }
+
+    /**
+     * 根据查询次数、更新时间排序，分页获取虫害列表数据
+     *
+     * @param page 页数
+     * @return 返回分页列表数据
+     */
+    @GetMapping(value = "/findAllInsects")
+    public BaseEntity<Page<DiseaseTable>> findAllInsects(@RequestParam("page") int page) {
+        BaseEntity<Page<DiseaseTable>> baseEntity = new BaseEntity<>();
+        baseEntity.setCode(200);
+        baseEntity.setMessage("success");
+        baseEntity.setData(diseaseImpl.findAll(1, page));
+        return baseEntity;
+    }
+
+    /**
+     * 病虫害搜索获取植物信息
+     *
+     * @param name 搜索输入内容
+     * @param page 页数
+     * @return 返回植物列表
+     */
+    @GetMapping(value = "/getPlantsFromDisease")
+    public BaseEntity getPlants(@RequestParam("name") String name, @RequestParam("page") int page) {
+        BaseEntity<List> baseEntity = new BaseEntity<>();
+        baseEntity.setCode(200);
+        baseEntity.setMessage("success");
+        List list = diseaseImpl.getPlantList(name, page);
+        if (list.size() != 0) {
+            baseEntity.setData(list);
+        }
+
+        // 搜索历史记录
+        searchImpl.setSearch(name, 1);
+
         return baseEntity;
     }
 }

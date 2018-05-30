@@ -20,13 +20,14 @@ public class PlantIdtImpl {
     private PlantRepository plantRepository;
 
     public BaseEntity<List<PlantList.ResultBean>> uploadImgBase64(String img) {
+        img = img.replaceAll(" ", "+");
         PlantList plant = signController.getFlowerList(img);
         BaseEntity<List<PlantList.ResultBean>> entity = new BaseEntity<>();
         entity.setCode(plant.getStatus() == 0 ? 200 : 500);
         entity.setMessage(plant.getStatus() == 0 ? "success" : plant.getMessage());
         entity.setData(plant.getStatus() == 0 ? plant.getResult() : null);
-        LogUtil.d("test:" + img);
-        LogUtil.d("test:" + plant.getResult().get(0).getInfoUrl());
+        LogUtil.d("test img:" + img);
+        LogUtil.d("test code:" + plant.getStatus());
         return entity;
     }
 

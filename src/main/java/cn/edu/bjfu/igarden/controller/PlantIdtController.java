@@ -5,13 +5,17 @@ import cn.edu.bjfu.igarden.entity.Plant;
 import cn.edu.bjfu.igarden.entity.PlantList;
 import cn.edu.bjfu.igarden.model.PlantIdtImpl;
 import cn.edu.bjfu.igarden.util.FileUtil;
+import cn.edu.bjfu.igarden.util.LogUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class PlantIdtController {
@@ -62,8 +66,11 @@ public class PlantIdtController {
 
     // Duplicate
     @GetMapping(value = "/testtest")
-    public String test() {
-        return "Hello world";
+    public Map test(@RequestParam("name") String name, @RequestParam("page") int page) {
+        LogUtil.e("123456");
+        Map map = new HashMap();
+        map.put("test", 123);
+        return map;
     }
 
 }
