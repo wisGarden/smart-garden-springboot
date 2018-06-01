@@ -78,6 +78,7 @@ public class PlantIdtImpl {
         if (plantTable != null) {
             plant.setId(plantTable.getId());
             plant.setCreateTime(plantTable.getCreateTime());
+            plant.setDeleteTime(0);
         }
         plantRepository.save(plant);
     }

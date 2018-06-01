@@ -142,4 +142,43 @@ public class DiseaseController {
 
         return baseEntity;
     }
+
+    /**
+     * 根据植物id获取病害信息
+     *
+     * @param id   植物id
+     * @param page 页数
+     * @return 返回病害列表
+     */
+    @GetMapping(value = "getDiseasesByPlantId")
+    public BaseEntity getDiseasesByPlantId(@RequestParam("id") int id, @RequestParam("page") int page) {
+        BaseEntity<List> baseEntity = new BaseEntity<>();
+        baseEntity.setCode(200);
+        baseEntity.setMessage("success");
+        List list = diseaseImpl.getDiseasesByPlantId(id, page, 0);
+        LogUtil.e("size!!!:   "+list.size());
+        if (list.size() != 0) {
+            baseEntity.setData(list);
+        }
+        return baseEntity;
+    }
+
+    /**
+     * 根据植物id获取虫害信息
+     *
+     * @param id   植物id
+     * @param page 页数
+     * @return 返回虫害列表
+     */
+    @GetMapping(value = "getInsectsByPlantId")
+    public BaseEntity getInsectsByPlantId(@RequestParam("id") int id, @RequestParam("page") int page) {
+        BaseEntity<List> baseEntity = new BaseEntity<>();
+        baseEntity.setCode(200);
+        baseEntity.setMessage("success");
+        List list = diseaseImpl.getDiseasesByPlantId(id, page, 1);
+        if (list.size() != 0) {
+            baseEntity.setData(list);
+        }
+        return baseEntity;
+    }
 }

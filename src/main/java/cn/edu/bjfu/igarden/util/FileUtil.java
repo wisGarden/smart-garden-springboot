@@ -1,10 +1,8 @@
 package cn.edu.bjfu.igarden.util;
 
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
 import org.apache.tomcat.util.codec.binary.Base64;
-import sun.misc.BASE64Encoder;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -86,17 +84,18 @@ public class FileUtil {
             }
             // 开始读取文件并进行压缩
             Image src = javax.imageio.ImageIO.read(srcfile);
-            BufferedImage tag = new BufferedImage((int) widthdist,
-                    (int) heightdist, BufferedImage.TYPE_INT_RGB);
+            BufferedImage tag = new BufferedImage(widthdist,
+                    heightdist, BufferedImage.TYPE_INT_RGB);
 
             tag.getGraphics().drawImage(
                     src.getScaledInstance(widthdist, heightdist,
                             Image.SCALE_SMOOTH), 0, 0, null);
 
-            FileOutputStream out = new FileOutputStream(imgPath + "thumb" + imgName);
-            JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
-            encoder.encode(tag);
-            out.close();
+            ByteArrayOutputStream out = null;
+            byte[] b = null;
+            String dstName = imgPath + "thumb" + imgName;
+            String formatName = (imgPath + "thumb" + imgName).substring((imgPath + "thumb" + imgName).lastIndexOf(".") + 1);
+            ImageIO.write(tag, formatName, new File(dstName));
 
         } catch (IOException ex) {
             ex.printStackTrace();
