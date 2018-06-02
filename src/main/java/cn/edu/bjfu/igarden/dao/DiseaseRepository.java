@@ -10,4 +10,5 @@ public interface DiseaseRepository extends JpaRepository<DiseaseTable, Integer> 
 
     DiseaseTable findByIdAndDeleteTime(int id, long deleteTime);
     Page<DiseaseTable> findByDeleteTimeAndDiseaseType(long deleteTime, int diseaseType, Pageable pageable);
+    DiseaseTable findByDiseaseOptionRelAndDeleteTime(int optionId, long deleteTime);
 }

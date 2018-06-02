@@ -112,7 +112,7 @@ public class DiseaseImpl {
 
     public List getDiseasesByPlantId(int id, int page, int type) {
         String baseQuery = "select d.id, d.disease_name name, d.disease_description description, d.disease_part part, d.disease_image imageUrl " +
-                "from disease d where d.plant_id = %1$d and d.delete_time = 0 and d.disease_type = %2$d order by d.id asc limit %3$d, %4$d";
+                "from disease d where d.plant_id like '%%%1$d%%' and d.delete_time = 0 and d.disease_type = %2$d order by d.id asc limit %3$d, %4$d";
         String mQuery = String.format(baseQuery, id, type, (page - 1) * ITEM_NUM, ITEM_NUM);
 
         // 自定义query，提高查询效率

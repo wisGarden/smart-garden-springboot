@@ -13,12 +13,12 @@ public class DiseaseTable {
     @NotNull
     @GeneratedValue
     private int id;
-    private int plantId;
+    private String plantId;
     private String diseaseName;
     private String diseasePart;
     private String diseasePeriod;
     private int diseaseType;
-    private String diseaseOptionRel;
+    private int diseaseOptionRel;
     private String diseaseDescription;
     private String diseaseSymptom;
     private String diseaseCharacter;
@@ -39,11 +39,11 @@ public class DiseaseTable {
         this.id = id;
     }
 
-    public int getPlantId() {
+    public String getPlantId() {
         return plantId;
     }
 
-    public void setPlantId(int plantId) {
+    public void setPlantId(String plantId) {
         this.plantId = plantId;
     }
 
@@ -79,11 +79,11 @@ public class DiseaseTable {
         this.diseaseType = diseaseType;
     }
 
-    public String getDiseaseOptionRel() {
+    public int getDiseaseOptionRel() {
         return diseaseOptionRel;
     }
 
-    public void setDiseaseOptionRel(String diseaseOptionRel) {
+    public void setDiseaseOptionRel(int diseaseOptionRel) {
         this.diseaseOptionRel = diseaseOptionRel;
     }
 
