@@ -83,8 +83,6 @@ public class DiseaseController {
         DiseaseTable diseaseTable = diseaseImpl.getDisease(id);
         baseEntity.setData(diseaseTable);
 
-        // 记录查询次数
-        diseaseTable.hitsPlus();
         diseaseImpl.save(diseaseTable);
 
         return baseEntity;
@@ -125,14 +123,15 @@ public class DiseaseController {
      *
      * @param name 搜索输入内容
      * @param page 页数
+     * @param size 0 -> 每页获取5条 1 -> 每页获取10条
      * @return 返回植物列表
      */
-    @GetMapping(value = "/getPlantsFromDisease")
-    public BaseEntity getPlants(@RequestParam("name") String name, @RequestParam("page") int page) {
+    @GetMapping(value = "/getMuchPlantsFromDisease")
+    public BaseEntity getPlants(@RequestParam("name") String name, @RequestParam("page") int page, @RequestParam("size") int size) {
         BaseEntity<List> baseEntity = new BaseEntity<>();
         baseEntity.setCode(200);
         baseEntity.setMessage("success");
-        List list = diseaseImpl.getPlantList(name, page);
+        List list = diseaseImpl.getPlantList(name, page, size);
         if (list.size() != 0) {
             baseEntity.setData(list);
         }
@@ -141,6 +140,18 @@ public class DiseaseController {
         searchImpl.setSearch(name, 1);
 
         return baseEntity;
+    }
+
+    /**
+     * 病虫害搜索获取植物信息
+     *
+     * @param name 搜索输入内容
+     * @param page 页数
+     * @return 返回植物列表
+     */
+    @GetMapping(value = "/getPlantsFromDisease")
+    public BaseEntity getPlants(@RequestParam("name") String name, @RequestParam("page") int page) {
+        return getPlants(name, page, 0);
     }
 
     /**

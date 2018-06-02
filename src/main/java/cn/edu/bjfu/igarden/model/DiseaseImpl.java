@@ -51,7 +51,7 @@ public class DiseaseImpl {
 
         String baseQuery = "select d.id, d.disease_name name, d.disease_description description, p.plant_name plantName, d.disease_image imageUrl " +
                 "from disease d inner join plant p on d.plant_id = p.id where d.delete_time = 0 and p.delete_time = 0 and " +
-                "(select (@rowNum\\:=@rowNum+1) from (Select (@rowNum \\:=0) ) b) > (%1$d * %2$d) and d.disease_type = %3$d and %4$s order by d.id asc limit %2$d";
+                "(select (@rowNum\\:=@rowNum+1) from (Select (@rowNum \\:=0) ) b) > (%1$d * %2$d) and d.disease_type = %3$d and %4$s order by d.hits desc, d.update_time, d.id asc limit %2$d";
         String mQuery = String.format(baseQuery, page - 1, ITEM_NUM, type, whereBuilder.toString());
 
         // 自定义query，提高查询效率
@@ -78,10 +78,12 @@ public class DiseaseImpl {
     }
 
     public void save(DiseaseTable diseaseTable) {
+        // 记录查询次数
+        diseaseTable.hitsPlus();
         diseaseRepository.save(diseaseTable);
     }
 
-    public List getPlantList(String name, int page) {
+    public List getPlantList(String name, int page, int size) {
         if (name.contains("'")) {
             name = name.replaceAll("'", "");
         }
@@ -98,9 +100,10 @@ public class DiseaseImpl {
             }
         }
 
+        int item_num = size == 0 ? SHORT_ITEM_NUM : ITEM_NUM;
         String baseQuery = "select p.id, p.plant_name name, p.plant_description description, p.plant_family family, p.plant_genus genus, p.plant_image imageUrl " +
-                "from plant p where p.delete_time = 0 and %3$s order by p.update_time desc limit %1$d, %2$d";
-        String mQuery = String.format(baseQuery, (page - 1) * SHORT_ITEM_NUM, SHORT_ITEM_NUM, whereBuilder.toString());
+                "from plant p where p.delete_time = 0 and %3$s order by p.hits desc, p.update_time, p.id asc limit %1$d, %2$d";
+        String mQuery = String.format(baseQuery, (page - 1) * item_num, item_num, whereBuilder.toString());
 
         // 自定义query，提高查询效率
         Query query = entityManager.createNativeQuery(mQuery);
@@ -112,7 +115,7 @@ public class DiseaseImpl {
 
     public List getDiseasesByPlantId(int id, int page, int type) {
         String baseQuery = "select d.id, d.disease_name name, d.disease_description description, d.disease_part part, d.disease_image imageUrl " +
-                "from disease d where d.plant_id like '%%%1$d%%' and d.delete_time = 0 and d.disease_type = %2$d order by d.id asc limit %3$d, %4$d";
+                "from disease d where d.plant_id like '%%%1$d%%' and d.delete_time = 0 and d.disease_type = %2$d order by d.hits desc, d.update_time, d.id asc limit %3$d, %4$d";
         String mQuery = String.format(baseQuery, id, type, (page - 1) * ITEM_NUM, ITEM_NUM);
 
         // 自定义query，提高查询效率

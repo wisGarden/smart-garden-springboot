@@ -77,6 +77,10 @@ public class PlantIdtImpl {
         PlantTable plantTable = plantRepository.findByPlantName(plant.getPlantName());
         if (plantTable != null) {
             plant.setId(plantTable.getId());
+            // 记录查询次数
+            plant.setHits(plantTable.getHits());
+            plant.hitsPlus();
+            LogUtil.d("test: hits: " + plant.getHits());
             plant.setCreateTime(plantTable.getCreateTime());
             plant.setDeleteTime(0);
         }
