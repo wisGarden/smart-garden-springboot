@@ -15,6 +15,8 @@ public class PlantDescription {
     private int id;
     private String plantName;
     private String plantDescription;
+    private String family;
+    private String genus;
     private String imageUrl;
 
     public int getId() {
@@ -39,6 +41,22 @@ public class PlantDescription {
 
     public void setPlantDescription(String plantDescription) {
         this.plantDescription = plantDescription;
+    }
+
+    public String getFamily() {
+        return family;
+    }
+
+    public void setFamily(String family) {
+        this.family = family;
+    }
+
+    public String getGenus() {
+        return genus;
+    }
+
+    public void setGenus(String genus) {
+        this.genus = genus;
     }
 
     public String getImageUrl() {
