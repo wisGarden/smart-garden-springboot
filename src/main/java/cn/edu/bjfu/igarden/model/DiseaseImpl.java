@@ -3,6 +3,7 @@ package cn.edu.bjfu.igarden.model;
 import cn.edu.bjfu.igarden.dao.DiseaseRepository;
 import cn.edu.bjfu.igarden.dao.PlantRepository;
 import cn.edu.bjfu.igarden.entity.DiseaseTable;
+import cn.edu.bjfu.igarden.util.LogUtil;
 import org.hibernate.SQLQuery;
 import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;

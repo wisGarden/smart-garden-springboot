@@ -161,7 +161,7 @@ public class DiseaseController {
      * @param page 页数
      * @return 返回病害列表
      */
-    @GetMapping(value = "getDiseasesByPlantId")
+    @GetMapping(value = "/getDiseasesByPlantId")
     public BaseEntity getDiseasesByPlantId(@RequestParam("id") int id, @RequestParam("page") int page) {
         BaseEntity<List> baseEntity = new BaseEntity<>();
         baseEntity.setCode(200);
