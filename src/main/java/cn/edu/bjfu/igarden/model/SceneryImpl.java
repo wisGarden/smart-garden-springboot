@@ -98,7 +98,6 @@ public class SceneryImpl {
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(params, headers);
         ResponseEntity<String> response = restTemplate.exchange(GET_SCENERY_URL, HttpMethod.POST, requestEntity, String.class);
         String json = response.getBody();
-        LogUtil.e(json);
 
         Scenery scenery = new Gson().fromJson(json, Scenery.class);
         return saveScenery(scenery);

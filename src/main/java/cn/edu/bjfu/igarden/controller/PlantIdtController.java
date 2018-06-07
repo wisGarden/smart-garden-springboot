@@ -67,7 +67,6 @@ public class PlantIdtController {
     // Duplicate
     @GetMapping(value = "/testtest")
     public Map test(@RequestParam("name") String name, @RequestParam("page") int page) {
-        LogUtil.e("123456");
         Map map = new HashMap();
         map.put("test", 123);
         return map;

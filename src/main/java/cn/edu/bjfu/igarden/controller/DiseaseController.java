@@ -167,7 +167,6 @@ public class DiseaseController {
         baseEntity.setCode(200);
         baseEntity.setMessage("success");
         List list = diseaseImpl.getDiseasesByPlantId(id, page, 0);
-        LogUtil.e("size!!!:   "+list.size());
         if (list.size() != 0) {
             baseEntity.setData(list);
         }

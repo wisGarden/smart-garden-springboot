@@ -41,7 +41,7 @@ public class GameImpl {
 
     public void saveQuestions() {
         int id = 6;
-        while (id < 62) {
+        while (id < 100) {
             PlantTable plantTable = plantRepository.findByIdAndDeleteTime(id, 0);
             if (plantTable == null || plantTable.getPlantImage().trim().equals("")) {
                 id++;
