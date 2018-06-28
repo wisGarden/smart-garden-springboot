@@ -1,5 +1,5 @@
 web:
-  upload-path: /root/springboot-images/
+  upload-path: /Users/chenjie/springboot-images/
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver

@@ -1,9 +1,6 @@
 package cn.edu.bjfu.igarden.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -15,8 +12,11 @@ public class PlantDescription {
     private int id;
     private String plantName;
     private String plantDescription;
+    @Transient
     private String family;
+    @Transient
     private String genus;
+    @Transient
     private String imageUrl;
 
     public int getId() {
